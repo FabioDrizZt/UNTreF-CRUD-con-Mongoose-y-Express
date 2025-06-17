@@ -1,0 +1,47 @@
+### Ir a la pagina principal
+ http://localhost:3000
+
+### Mostrar todas las pelis
+GET http://localhost:3000/peliculas
+
+### Mostrar las pelis de un cierto genero por query
+GET http://localhost:3000/peliculas?genero=Romance
+
+### Mostrar las pelis de un cierto genero por query
+GET http://localhost:3000/peliculas?genero=risa
+
+### Mostrar una peli por id - Dark Knight
+GET http://localhost:3000/peliculas/684b5bc648f3b1c63ff28829
+
+### Mostrar Peliculas por director
+GET http://localhost:3000/peliculas/director/Christopher Nolan
+
+### Mostrar Peliculas con una puntuación mayor o igual a :rate
+GET http://localhost:3000/peliculas/rate/8.5
+
+### Mostrar una peli por id que no existe
+GET http://localhost:3000/peliculas/684b5bc648f3b1c63ff28822
+
+### Agregar una peli (el id se genera en el backend)
+POST http://localhost:3000/peliculas/
+content-type: application/json
+
+{
+    "title": "Mi peli con mongoose",
+    "year": 2024,
+    "director": "Fabio",
+    "duration": 120,
+    "genre": ["Action","Drama","Crime"]
+}
+
+### Borrar una peli por id
+DELETE http://localhost:3000/peliculas/6851f6ea8fb013ee9ba1a276
+
+### Modificar/Actualizar una peli
+PATCH http://localhost:3000/peliculas/6851fed7cb30539e30ee7f9b
+content-type: application/json
+
+{
+    "duration": 222,
+    "year" : 2025
+}
