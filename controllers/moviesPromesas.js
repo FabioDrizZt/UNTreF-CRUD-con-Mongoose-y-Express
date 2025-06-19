@@ -1,19 +1,6 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const { Movie } = require("./models/movie");
-const app = express();
-process.loadEnvFile();
-const PORT = process.env.PORT || 3000;
-const { DB_PROTOCOL, DB_HOST, DB_PASS, DB_USER, DB_OPTIONS, DB_NAME } =
-  process.env;
-const MONGODB_URI = `${DB_PROTOCOL}://${DB_USER}:${DB_PASS}@${DB_HOST}/${DB_NAME}?${DB_OPTIONS}`;
-app.use(express.json());
+const { Movie } = require("../models/movie");
 
-app.get("/", (req, res) => {
-  return res.json({ message: "Hoal, Mundo !" });
-});
-
-app.get("/peliculas", (req, res) => {
+const getMovies = (req, res) => {
   const genre = req.query.genero;
   const query = !genre ? {} : { genre: { $regex: genre, $options: "i" } };
   Movie.find(query)
@@ -25,9 +12,9 @@ app.get("/peliculas", (req, res) => {
       }
     })
     .catch((err) => res.status(500).json(err));
-});
+};
 
-app.get("/peliculas/:id", (req, res) => {
+const getMovieById = (req, res) => {
   const { id } = req.params;
   Movie.findById(id)
     .then((movie) => {
@@ -38,17 +25,17 @@ app.get("/peliculas/:id", (req, res) => {
       }
     })
     .catch((err) => res.status(500).json(err));
-});
+};
 
-app.post("/peliculas", (req, res) => {
+const createMovie = (req, res) => {
   const newMovie = new Movie(req.body);
   newMovie
     .save()
     .then((insertedMovie) => res.status(201).json(insertedMovie))
     .catch((err) => res.status(500).json(err));
-});
+};
 
-app.delete("/peliculas/:id", (req, res) => {
+const deleteMovie = (req, res) => {
   const { id } = req.params;
   Movie.findByIdAndDelete(id)
     .then((deletedMovie) => {
@@ -59,9 +46,9 @@ app.delete("/peliculas/:id", (req, res) => {
       }
     })
     .catch((err) => res.status(500).json(err));
-});
+};
 
-app.patch("/peliculas/:id", (req, res) => {
+const updateMovie = (req, res) => {
   const { id } = req.params;
   Movie.findByIdAndUpdate(id, req.body, { new: true })
     .then((updatedMovie) => {
@@ -72,9 +59,12 @@ app.patch("/peliculas/:id", (req, res) => {
       }
     })
     .catch((err) => res.status(500).json(err));
-});
+};
 
-app.listen(PORT, () => {
-  mongoose.connect(MONGODB_URI);
-  console.log(`http://localhost:${PORT}`);
-});
+module.exports = {
+  getMovies,
+  getMovieById,
+  createMovie,
+  deleteMovie,
+  updateMovie,
+};
