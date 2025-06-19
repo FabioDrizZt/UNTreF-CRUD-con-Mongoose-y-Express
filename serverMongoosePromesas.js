@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const { Movie } = require("./schemas/movie");
+const { Movie } = require("./models/movie");
 const app = express();
 process.loadEnvFile();
 const PORT = process.env.PORT || 3000;
